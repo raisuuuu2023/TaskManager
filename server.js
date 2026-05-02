@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const taskRoutes = require('./routes/tasks');        
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -7,7 +8,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// 404 handler
+app.use('/api/tasks', taskRoutes);                  
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -15,7 +17,6 @@ app.use((req, res) => {
   });
 });
 
-// Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
@@ -27,6 +28,7 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`API: http://localhost:${PORT}/api/tasks`);
 });
 
 module.exports = app;
